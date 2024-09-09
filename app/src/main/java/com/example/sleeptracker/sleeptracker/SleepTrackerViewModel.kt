@@ -17,4 +17,5 @@ class SleepTrackerViewModel(
         super.onCleared()
         viewModelJob.cancel()
     }
+    // private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 }
