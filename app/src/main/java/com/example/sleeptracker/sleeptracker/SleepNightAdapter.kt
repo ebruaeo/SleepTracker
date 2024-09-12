@@ -2,6 +2,8 @@ package com.example.sleeptracker.sleeptracker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sleeptracker.R
 import com.example.sleeptracker.convertDurationToFormatted
@@ -9,24 +11,15 @@ import com.example.sleeptracker.convertNumericQualityToString
 import com.example.sleeptracker.database.SleepNight
 import com.example.sleeptracker.databinding.ListItemSleepNightBinding
 
-class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
-    var data = listOf<SleepNight>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class SleepNightAdapter : ListAdapter<SleepNight, SleepNightAdapter.ViewHolder>(SleepNightDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
+        val item = getItem(position)
         holder.bind(item)
-    }
-
-    override fun getItemCount(): Int {
-        return data.size
     }
 
     class ViewHolder(private val itemBinding: ListItemSleepNightBinding) :
@@ -57,5 +50,14 @@ class SleepNightAdapter : RecyclerView.Adapter<SleepNightAdapter.ViewHolder>() {
         }
     }
 
+    class SleepNightDiffCallback :  DiffUtil.ItemCallback<SleepNight>() {
+        override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+          return oldItem.nightId == newItem.nightId
+        }
+
+        override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+          return oldItem == newItem
+        }
+    }
 
 }
