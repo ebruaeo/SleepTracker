@@ -14,7 +14,7 @@ class SleepDetailViewModel(
 
     val database = dataSource
 
-    private val night = MediatorLiveData<SleepNight>()
+    private val night = MediatorLiveData<SleepNight?>()
 
     fun getNight() = night
     init {
